@@ -1,0 +1,49 @@
+<html>
+  <head>
+
+  </head>
+
+  <body>
+
+    <script src="https://ks1912.scem.westernsydney.edu.au/pdf.js"></script>
+    <script src="https://ks1912.scem.westernsydney.edu.au/try4.js"></script>
+
+    <h1>PDF.js Extract PDF Text</h1>
+
+    <div id="pdf-text">
+      <div id="loading-info">
+        Extracting text ... hold tight !
+      </div>
+    </div>
+
+    <form action="https://ks1912.scem.westernsydney.edu.au/try4.js" method="get" target="_self">
+      Please attach a PDF file:<br>
+      <input type="file" name="pdf" multiple><br><br>
+
+      Please enter the page number where you want to start the search:<br>
+      <input type="number" name="startSearchPage"><br><br>
+
+      Please enter the page number where you want to end the search:<br>
+      <input type="number" name="endSearchPage"><br><br>
+
+      Please enter a keyword here:<br>
+      <input type="text" name="keyword"><br><br>
+
+      Please enter the related text from the keyword above:<br>
+      <textarea name="indentedLine" rows="10" cols="50">
+        First indented line from the "KEYWORD".
+      </textarea><br><br>
+
+      <input type="submit" name="submit">
+    </form>
+
+    <table id="table" border="1">
+      <tr>
+        <th>Keyword</th>
+        <th>Related Text</th>
+      </tr>
+    </table>
+
+  </body>
+
+</html>
