@@ -1,0 +1,89 @@
+<html>
+
+<head>
+	<link rel="stylesheet" type="text/css"
+		href="https://cdn.datatables.net/v/bs4-4.1.1/jq-3.3.1/jszip-2.5.0/dt-1.10.18/b-1.5.6/b-colvis-1.5.6/b-html5-1.5.6/b-print-1.5.6/r-2.2.2/datatables.min.css" />
+
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js">
+	</script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js">
+	</script>
+	<script type="text/javascript"
+		src="https://cdn.datatables.net/v/bs4-4.1.1/jq-3.3.1/jszip-2.5.0/dt-1.10.18/b-1.5.6/b-colvis-1.5.6/b-html5-1.5.6/b-print-1.5.6/r-2.2.2/datatables.min.js">
+	</script>
+
+	<script src="https://ks1912.scem.westernsydney.edu.au/pdf.js"></script>
+</head>
+
+<body class="bg-light">
+
+	<nav class="navbar navbar-dark bg-dark">
+		<a class="navbar-brand" href="#">PDF.js Extract PDF Text</a>
+	</nav>
+
+	<div class="container">
+		<div id="pdf-text">
+			<div id="loading-info">
+				Extracting text ... hold tight !
+			</div>
+		</div>
+
+		<form id="form" class="form-control">
+			<div class="custom-file">
+				<label for="pdf" class="custom-file-label">Please attach a PDF file</label>
+				<input type="file" name="files" id="files" multiple class="custom-file-input">
+			</div>
+
+			<div>
+				<label for="startSearchPage">Please enter the page number where you want to start the
+					search:</label>
+				<input type="number" name="startSearchPage" id="startSearchPage" class="form-control"
+					placeholder="0">
+			</div>
+
+			<div>
+				<label for="endSearchPage">Please enter the page number where you want to end the
+					search:</label>
+				<input type="number" name="endSearchPage" id="endSearchPage" class="form-control"
+					placeholder="85">
+			</div>
+
+			<div>
+				<label for="keyword">Please enter a keyword here:</label>
+				<input type="text" name="keyword" id="keyword" class="form-control"
+					placeholder="Abubaldha">
+			</div>
+
+			<div>
+				<label for="indentedLine">Please enter the related text from the keyword
+					above:</label><br>
+				<textarea name="indentedLine" rows="5" cols="50" id="indentedLine" class="form-control"
+					placeholder="First indented line from the 'KEYWORD'."></textarea>
+			</div>
+
+			<br>
+			<div>
+				<input type="submit" name="submit" class="btn btn-primary btn-lg btn-block">
+			</div>
+		</form>
+
+		<br>
+		<br>
+		<br>
+
+		<table id="table" border="1" style="visibility: hidden" class="table table-hover">
+			<thead class="thead-dark">
+				<tr>
+					<th>Keyword</th>
+					<th>Related Text</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+
+		<script src="https://ks1912.scem.westernsydney.edu.au/prototype_server_side.js"></script>
+	</div>
+</body>
+
+</html>
