@@ -1,6 +1,8 @@
 var KEYWORD;
 var START_PAGE;
 var END_PAGE;
+var HEADER;
+var FOOTER;
 
 // The workerSrc property shall be specified.
 pdfjsLib.workerSrc = 'pdfjs/build/pdf.worker.js';
@@ -19,16 +21,14 @@ document.querySelector('#form').addEventListener('submit', e => {
     //get startSearchPage
     START_PAGE = document.getElementById("form").elements.namedItem("startSearchPage").value;
     START_PAGE = parseInt(START_PAGE);
-    console.log(typeof START_PAGE);
     //get endSearchPage
     END_PAGE = document.getElementById("form").elements.namedItem("endSearchPage").value;
     END_PAGE = parseInt(END_PAGE);
-    console.log(typeof END_PAGE);
 
-    //test
-    console.log("keyword = " + KEYWORD);
-    console.log("startSearchPage = " + START_PAGE);
-    console.log("endSearchPage = " + END_PAGE);
+    //get sample header on a page
+    HEADER = document.getElementById("form").elements.namedItem("header").value;
+    //get sample footer on a page
+    FOOTER = document.getElementById("form").elements.namedItem("footer").value;
 })
 
 const workWithFile = file => {
@@ -77,6 +77,22 @@ const workWithFile = file => {
 
                 var xCoordinatesOfKeyword = [];
                 xCoordinatesOfKeyword = xCoordinatesOfKeyword.concat(collectXCoordinate(lines, indentationDifference));
+
+                var headerYcoords = getHeaderYcoordinate(HEADER, lines);
+                var footerYcoords = getFooterYcoordinate(FOOTER, lines);
+                //test
+                if (HEADER != -1 && FOOTER != -1) {
+                  var tempLines = [];
+                  tempLines = tempLines.concat(removeHeaders(lines, headerYcoords));
+                  lines = [];
+                  lines = lines.concat(tempLines);
+
+                  tempLines = [];
+                  tempLines = tempLines.concat(removeFooters(lines, footerYcoords));
+                  lines = [];
+                  lines = lines.concat(tempLines);
+                }
+                //endtest
 
                 fillTable2(lines, indentationDifference, xCoordinatesOfKeyword);
 
@@ -208,6 +224,62 @@ function collectXCoordinate(lines, indentationDifference) {
   }
 
   return xCoords;
+}
+
+function getHeaderYcoordinate(header, lines) {
+  var headerYcoords;
+
+  for (var i = 0; i < lines.length; i++) {
+    if (lines[i].str.search(header) != -1) {
+      headerYcoords = lines[i].yCoordinate;
+      break;
+    } else {
+      headerYcoords = -1;
+    }
+  }
+  console.log("headerYcoords = " + headerYcoords);
+  return headerYcoords;
+}
+
+function getFooterYcoordinate(footer, lines) {
+  var footerYcoords;
+
+  for (var i = 0; i < lines.length; i++) {
+    if (lines[i].str.search(footer) != -1) {
+      footerYcoords = lines[i].yCoordinate;
+      break;
+    } else {
+      footerYcoords = -1;
+    }
+  }
+  console.log("footerYcoords = " + footerYcoords);
+  return footerYcoords;
+}
+
+function removeHeaders(lines, yCoords) {
+  var linesWithoutHeaders = [];
+
+  for (var i = 0; i < lines.length; i++) {
+    if (lines[i].yCoordinate >= yCoords) {
+      lines.splice(i, 1);
+    }
+  }
+  linesWithoutHeaders = linesWithoutHeaders.concat(lines);
+
+  return linesWithoutHeaders;
+}
+
+function removeFooters(lines, yCoords) {
+  var linesWithoutFooters = [];
+
+  for (var i = 0; i < lines.length; i++) {
+    if (lines[i].yCoordinate < (yCoords+1)) {
+      lines.splice(i, 1);
+    }
+  }
+  linesWithoutFooters = linesWithoutFooters.concat(lines);
+
+  return linesWithoutFooters
 }
 
 function isIndented(lineAbove, lineCurrent, lines) {
