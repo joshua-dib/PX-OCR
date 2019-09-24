@@ -1,14 +1,26 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="UTF-8">
     <title>Electron</title>
-    <link rel="stylesheet" type="text/css" href="DataTables/datatables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="DataTables/datatables.min.css" />
+
+    <!-- Required at top of scripts for jquery in electron -->
+    <script>
+        if (typeof module === 'object') {
+            window.module = module;
+            module = undefined;
+        }
+    </script>
 
     <script type="text/javascript" src="DataTables/datatables.min.js"></script>
+    <script src="DataTables/altEditor/dataTables.altEditor.free.js"></script>
     <script src="pdfjs/build/pdf.js"></script>
-  </head>
-  <body class="bg-light">
+
+</head>
+
+<body class="bg-light">
     <h1>Electron</h1>
     We are using Node.js <span id="node-version"></span>,
     Chromium <span id="chrome-version"></span>,
@@ -48,7 +60,7 @@
             <div>
                 <label for="indentedLine">Please enter the related text from the keyword
                     above:</label><br>
-                <textarea name="indentedLine" rows="5" cols="50" id="indentedLine" class="form-control"
+                <textarea name="indentedLine" rows="4" cols="50" id="indentedLine" class="form-control"
                     placeholder="First indented line from the 'KEYWORD'."></textarea>
             </div>
 
@@ -73,21 +85,27 @@
         <br>
 
         <table id="table" border="1" style="visibility: hidden" class="table table-hover">
-          <!-- <table id="table" border="1"> -->
+            <!-- <table id="table" border="1"> -->
             <thead class="thead-dark">
                 <tr>
-                    <th>Keyword</th>
-                    <th>Related Text</th>
                     <th>Process Number</th>
+                    <th>Keyword</th>
+                    <th>Part of Speech</th>
+                    <th>Related Text</th>
                 </tr>
             </thead>
             <tbody>
             </tbody>
         </table>
-
         <script src="prototype_server_side.js"></script>
     </div>
     <!-- You can also require other files to run in this process -->
     <script src="./renderer.js"></script>
-  </body>
+
+    <!-- Insert this line after script imports -->
+    <script>
+        if (window.module) module = window.module;
+    </script>
+</body>
+
 </html>
