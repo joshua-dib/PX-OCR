@@ -81,13 +81,15 @@ const workWithFile = file => {
                 var headerYcoords = getHeaderYcoordinate(HEADER, lines);
                 var footerYcoords = getFooterYcoordinate(FOOTER, lines);
                 //test
-                if (HEADER != -1 && FOOTER != -1) {
+                if (HEADER != 'none' || HEADER != 'None' || HEADER != 'NONE') {
                   var tempLines = [];
                   tempLines = tempLines.concat(removeHeaders(lines, headerYcoords));
                   lines = [];
                   lines = lines.concat(tempLines);
+                }
 
-                  tempLines = [];
+                if (FOOTER != 'none' || FOOTER != 'None' || FOOTER != 'NONE') {
+                  var tempLines = [];
                   tempLines = tempLines.concat(removeFooters(lines, footerYcoords));
                   lines = [];
                   lines = lines.concat(tempLines);
@@ -156,7 +158,7 @@ function fillTable2(lines, indentationDifference, xCoordinatesOfKeyword) {
   var isOnRelatedText = false;
 
   for (var i = 0; i < lines.length; i++) {
-    if (xCoordinatesOfKeyword.includes(lines[i].xCoordinate)) {
+    if (xCoordinatesOfKeyword.includes(lines[i].xCoordinate.toFixed(1))) {
       keyword = getKeywordFromStr(lines[i].str);
       relatedText = getRelatedTextFromStr(lines[i].str);
 
@@ -213,8 +215,8 @@ function collectXCoordinate(lines, indentationDifference) {
 
   for (var i = 0; i < lines.length; i++) {
     if (isKeyword(i, lines, indentationDifference)) {
-        if (!xCoords.includes(lines[i].xCoordinate)) {
-          xCoords.push(lines[i].xCoordinate);
+        if (!xCoords.includes(lines[i].xCoordinate.toFixed(1))) {
+          xCoords.push(lines[i].xCoordinate.toFixed(1));
           console.log("keyword with indented line = " + lines[i].str + lines[i+1].str);
           console.log(lines[i].str + " = " + lines[i].yCoordinate);
           console.log(lines[i+1].str + " = " + lines[i+1].yCoordinate);
