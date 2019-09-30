@@ -78,9 +78,8 @@ const workWithFile = file => {
                 var xCoordinatesOfKeyword = [];
                 xCoordinatesOfKeyword = xCoordinatesOfKeyword.concat(collectXCoordinate(lines, indentationDifference));
 
-                var headerYcoords = getHeaderYcoordinate(HEADER, lines);
-                var footerYcoords = getFooterYcoordinate(FOOTER, lines);
                 //test
+                var headerYcoords = getHeaderYcoordinate(HEADER, lines);
                 if (HEADER != 'none' || HEADER != 'None' || HEADER != 'NONE') {
                   var tempLines = [];
                   tempLines = tempLines.concat(removeHeaders(lines, headerYcoords));
@@ -88,6 +87,7 @@ const workWithFile = file => {
                   lines = lines.concat(tempLines);
                 }
 
+                var footerYcoords = getFooterYcoordinate(FOOTER, lines);
                 if (FOOTER != 'none' || FOOTER != 'None' || FOOTER != 'NONE') {
                   var tempLines = [];
                   tempLines = tempLines.concat(removeFooters(lines, footerYcoords));
@@ -282,6 +282,7 @@ function removeHeaders(lines, yCoords) {
 
   for (var i = 0; i < lines.length; i++) {
     if (lines[i].yCoordinate >= yCoords) {
+      console.log("removed header: " + lines[i].str);
       lines.splice(i, 1);
     }
   }
@@ -294,7 +295,8 @@ function removeFooters(lines, yCoords) {
   var linesWithoutFooters = [];
 
   for (var i = 0; i < lines.length; i++) {
-    if (lines[i].yCoordinate < (yCoords+1)) {
+    if (lines[i].yCoordinate <= yCoords) {
+      console.log("removed footer: " + lines[i].str);
       lines.splice(i, 1);
     }
   }
