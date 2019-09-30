@@ -3,6 +3,8 @@ var START_PAGE;
 var END_PAGE;
 var HEADER;
 var FOOTER;
+var pSpeech=["noun","pronoun","adjective","adverb","verb","preposition","conjuction","interjection","article",
+			 "cli.","v.","n.","inst.","adv.","adj."];
 
 // The workerSrc property shall be specified.
 pdfjsLib.workerSrc = 'pdfjs/build/pdf.worker.js';
@@ -152,61 +154,101 @@ function getIndentationDifference(keyword, lines) {
 }
 
 function fillTable2(lines, indentationDifference, xCoordinatesOfKeyword) {
-  var table = document.getElementById("table").getElementsByTagName("tbody")[0];
-  // var table = document.getElementById("table");
-  var row, keyword, relatedText;
-  var isOnRelatedText = false;
+	$('#table').DataTable().clear();
+	$('#table').DataTable().destroy();
 
-  for (var i = 0; i < lines.length; i++) {
-    if (xCoordinatesOfKeyword.includes(lines[i].xCoordinate.toFixed(1))) {
-      keyword = getKeywordFromStr(lines[i].str);
-      relatedText = getRelatedTextFromStr(lines[i].str);
+	var table = document.getElementById("table").getElementsByTagName("tbody")[0];
+	var row, keyword, relatedText, pSpeech;
+	var isOnRelatedText = false;
 
-      initializeRow(table);
-      insertKeywordToTable(table, keyword);
-      insertRelatedText(table, relatedText);
-      insertProcessNumber(table);
-    } else {
-      if (table.rows.length > 0) {
-        insertRelatedText(table, lines[i].str);
-      }
-    }
-  }
+	for (var i = 0; i < lines.length; i++) {
+		if (xCoordinatesOfKeyword.includes(lines[i].xCoordinate.toFixed(1))) {
+			keyword = getKeywordFromStr(lines[i].str);
+			relatedText = getRelatedTextFromStr(lines[i].str);
 
-  $('#table').DataTable({
-  serverside:false,
-  dom: "<'row'<'col-sm-6'lB><'col-sm-6'f>>" +
-  "<'row'<'col-md-12'tr>>" +
-  "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-  buttons: [
-      {
-                extend: 'copyHtml5',
-                exportOptions: {
-                    columns: ':visible'
-                }
-            },
-            {
-                extend: 'csvHtml5',
-                exportOptions: {
-                    columns: ':visible'
-                }
-            },
-            {
-                extend: 'pdfHtml5',
-                exportOptions: {
-                    columns: ':visible'
-                }
-            },
-      {
-                extend: 'print',
-                exportOptions: {
-                    columns: ':visible'
-                }
-            },
-            'colvis'
-        ]
-  });
-  document.getElementById("table").style.visibility = "visible";
+			initializeRow(table);
+			insertKeywordToTable(table, keyword);
+			insertRelatedText(table, relatedText);
+			insertProcessNumber(table);
+
+			pSpeech = getPartOfSpeech(table);
+			insertPartOfSpeech(table,pSpeech)
+		} else {
+			if (table.rows.length > 0) {
+				insertRelatedText(table, lines[i].str);
+			}
+		}
+	}
+	///
+	var tableDT = $('#table').DataTable({
+		orderCellsTop: true,
+		fixedHeader: true,
+
+		"columns": [{
+				"data": "ProcessNumber"
+			},
+			{
+				"data": "Keyword"
+			},
+			{
+				"data": "PartOfSpeech"
+			},
+			{
+				"data": "RelatedText"
+			}
+		],
+
+		select: {
+			style: 'single'
+		},
+		responsive: true,
+		altEditor: true,
+
+		dom: "<'row'<'col-sm-6'lB><'col-sm-6'f>>" +
+			"<'row'<'col-md-12't>>" +
+			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+		buttons: [{
+				text: 'Add',
+				name: 'add' // DO NOT change name
+			},
+			{
+				extend: 'selected', // Bind to Selected row
+				text: 'Edit',
+				name: 'edit' // DO NOT change name
+			},
+			{
+				extend: 'selected', // Bind to Selected row
+				text: 'Delete',
+				name: 'delete' // DO NOT change name
+			},
+			{
+				extend: 'csvHtml5',
+				exportOptions: {
+					columns: ':visible'
+				}
+			},
+			{
+				extend: 'pdfHtml5',
+				exportOptions: {
+					columns: ':visible'
+				}
+			}
+		]
+	});
+
+	$('#table thead tr:eq(1) th').each(function (i) {
+		var title = $(this).text();
+		$(this).html('<input type="text" placeholder="Search ' + title + '" />');
+		$('input', this).on('keyup change', function () {
+			if (tableDT.column(i).search() !== this.value) {
+				tableDT
+					.column(i)
+					.search(this.value)
+					.draw();
+			}
+		});
+	});
+	document.getElementById("table").style.visibility = "visible";
 }
 
 function collectXCoordinate(lines, indentationDifference) {
@@ -352,29 +394,43 @@ function getRelatedTextFromStr(str) {
   return relatedText;
 }
 
+function getPartOfSpeech(table) {
+	for (var i = 0; i < pSpeech.length; i++) {
+		if(table.rows[table.rows.length-1].cells[3].innerHTML.includes(pSpeech[i])){
+			return pSpeech[i];
+		}
+	}
+	return "N/A";
+}
+
 function initializeRow(table) {
-  var row, keyword, relatedText, processNumber;
+	var row, processNumber, keyword, partOfSpeech, relatedText;
 
-  row = table.insertRow(table.rows.length);
-  keyword = row.insertCell(0);
-  relatedText = row.insertCell(1);
-  processNumber = row.insertCell(2);
+	row = table.insertRow(table.rows.length);
+	processNumber = row.insertCell(0);
+	keyword = row.insertCell(1);
+	partOfSpeech = row.insertCell(2);
+	relatedText = row.insertCell(3);
+}
 
+function insertProcessNumber(table) {
+	var processNumber = table.rows.length - 1;
+	table.rows[table.rows.length - 1].cells[0].innerHTML += processNumber;
 }
 
 function insertKeywordToTable(table, word) {
     var relatedText;
-    table.rows[table.rows.length - 1].cells[0].innerHTML += word;
+    table.rows[table.rows.length - 1].cells[1].innerHTML += word;
+}
+
+function insertPartOfSpeech(table, pSpeech) {
+	var processNumber = table.rows.length - 1;
+	table.rows[table.rows.length - 1].cells[2].innerHTML += pSpeech;
 }
 
 function insertRelatedText(table, word) {
     var relatedText;
-    table.rows[table.rows.length - 1].cells[1].innerHTML += word + "<br>";
-}
-
-function insertProcessNumber(table) {
-  var processNumber = table.rows.length - 1;
-  table.rows[table.rows.length - 1].cells[2].innerHTML += processNumber;
+    table.rows[table.rows.length - 1].cells[3].innerHTML += word + "<br>";
 }
 
 function isKeyword(index, lines, indentDifference) {
@@ -489,3 +545,7 @@ function combineLineByLine(items) {
 
   return lines;
 }
+
+$(document).ready(function () {
+	$('#table thead tr').clone(true).appendTo('#table thead');
+});
