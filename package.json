@@ -1,17 +1,16 @@
 {
-  "name": "electron-quick-start",
+  "name": "arc-dictionary-extractor",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "A tool used for the extraction of dictionary entries",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
   },
-
   "keywords": [
     "Electron"
 
   ],
-  "author": "GitHub",
+  "author": "Joroca",
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "^6.0.7"

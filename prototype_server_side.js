@@ -397,6 +397,10 @@ function getRelatedTextFromStr(str) {
 function getPartOfSpeech(table) {
 	for (var i = 0; i < pSpeech.length; i++) {
 		if(table.rows[table.rows.length-1].cells[3].innerHTML.includes(pSpeech[i])){
+      var replaceStr = table.rows[table.rows.length-1].cells[3].innerHTML;
+      replaceStr=replaceStr.replace(pSpeech[i]," ");
+      replaceStr.trim();
+      table.rows[table.rows.length-1].cells[3].innerHTML=replaceStr;
 			return pSpeech[i];
 		}
 	}

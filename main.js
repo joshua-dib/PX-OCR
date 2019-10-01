@@ -12,7 +12,7 @@ function createWindow () {
     width: 1000,
     height: 1000,
     title: 'ARC Dictionary Extractor',
-    icon: __dirname + '/Assets/arclogo.png',
+    icon: __dirname + '/Assets/arclogo.ico',
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
     }
