@@ -182,7 +182,8 @@ function fillTable2(lines, indentationDifference, xCoordinatesOfKeyword) {
 	///
 	var tableDT = $('#table').DataTable({
 		orderCellsTop: true,
-		fixedHeader: true,
+		responsive: true,
+		altEditor: true,
 
 		"columns": [{
 				"data": "ProcessNumber"
@@ -201,8 +202,6 @@ function fillTable2(lines, indentationDifference, xCoordinatesOfKeyword) {
 		select: {
 			style: 'single'
 		},
-		responsive: true,
-		altEditor: true,
 
 		dom: "<'row'<'col-sm-6'lB><'col-sm-6'f>>" +
 			"<'row'<'col-md-12't>>" +
@@ -552,4 +551,7 @@ function combineLineByLine(items) {
 
 $(document).ready(function () {
 	$('#table thead tr').clone(true).appendTo('#table thead');
+	$("#files").on('change',function(){
+        document.getElementById('files-label').innerHTML = this.files[0].name
+    });
 });

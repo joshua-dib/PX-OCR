@@ -36,9 +36,9 @@
 	<div class="container" style="padding: 5px">
 		<div id="accordion">
 			<div class="card">
-				<div class="card-header" id="headingOne">
+				<div class="card-header bg-info" id="headingOne">
 					<h5 class="mb-0">
-						<button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne"
+						<button class="btn btn-link text-white" data-toggle="collapse" data-target="#collapseOne"
 							aria-expanded="true" aria-controls="collapseOne">
 							Dictionary Query Fields
 						</button>
@@ -50,7 +50,7 @@
 
 						<form id="form" class="form-control">
 							<div class="custom-file">
-								<label for="pdf" class="custom-file-label">Please attach a PDF file</label>
+								<label for="pdf" id="files-label" class="custom-file-label">Please attach a PDF file</label>
 								<input type="file" name="files" id="files" multiple class="custom-file-input">
 							</div>
 
@@ -86,8 +86,7 @@
 
 							<br>
 							<div>
-								<input type="submit" name="submit" value="Extract"
-									class="btn btn-primary btn-lg btn-block">
+								<input type="submit" name="submit" value="Extract" class="btn btn-primary btn-lg btn-block bg-secondary">
 							</div>
 						</form>
 					</div>
@@ -96,14 +95,15 @@
 		</div>
 		<br>
 		<br>
-		<table id="table" border="1" style="visibility: hidden" class="table table-hover">
+		<table id="table" border="1" style="visibility: hidden; width:100%" class="table table-hover dt-responsive nowrap bg-white">
 			<thead class="thead-dark">
 				<tr>
-					<th>Process Number</th>
-					<th>Keyword</th>
-					<th>Part of Speech</th>
-					<th>Related Text</th>
+					<th style="width: 5%">Process Number</th>
+					<th style="width: 30%">Keyword</th>
+					<th style="width: 20%">Part of Speech</th>
+					<th style="width: 45%">Related Text</th>
 				</tr>
+				
 			</thead>
 			<tbody>
 			</tbody>
