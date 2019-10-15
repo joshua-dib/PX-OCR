@@ -14,12 +14,33 @@ function createWindow () {
     title: 'ARC Dictionary Extractor',
     icon: __dirname + '/Assets/arclogo.ico',
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
+      preload: path.join(__dirname, 'preload.js'),
+      
+      //Enable for tabs BUT breaks the javscript
+      //Enable for tabs BUT breaks the javscript
+      //Enable for tabs BUT breaks the javscript
+      //Enable for tabs BUT breaks the javscript
+      //Enable for tabs BUT breaks the javscript
+      //nodeIntegration: true,
+      
+      
+      webviewTag: true
     }
   })
 
   // and load the index.html of the app.
-  mainWindow.loadFile('index.html')
+
+
+  //Change this to tabsindex.html
+  //Change this to tabsindex.html
+  //Change this to tabsindex.html
+  //Change this to tabsindex.html
+  //Change this to tabsindex.html
+  //Change this to tabsindex.html
+  //Change this to tabsindex.html
+
+
+  mainWindow.loadFile('extract.html')
   mainWindow.maximize(true)
 
   // Open the DevTools.

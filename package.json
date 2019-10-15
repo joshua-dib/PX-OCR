@@ -8,11 +8,13 @@
   },
   "keywords": [
     "Electron"
-
   ],
   "author": "Joroca",
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "^6.0.7"
+  },
+  "dependencies": {
+    "electron-tabs": "^0.10.0"
   }
 }
