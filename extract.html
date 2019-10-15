@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html style="min-height: 100%">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Arc Project</title>
+	<link rel="stylesheet" type="text/css" href="DataTables/datatables.min.css" />
+</head>
+
+<body class="bg-light">
+	<header>
+		<nav class="navbar navbar-expand-md navbar-dark sticky-top" style="background-color: #333333">
+			<a href="extract.html" class="navbar-brand"><img id="logo2" src="assets/logo2.png" height="64" width="263"
+					alt="minimal"></a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse justify-content-end" id="collapsibleNavbar">
+				<ul class="navbar-nav">
+					<li class="nav-item">
+						<a class="nav-link" href="extract.html">Extract</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="instructions.html">Instructions</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="about.html">About</a>
+					</li>
+				</ul>
+			</div>
+		</nav>
+		<br>
+	</header>
+
+	<div class="container" style="padding: 5px; min-height:calc(100vh - 149px)">
+		<div id="accordion">
+			<div class="card">
+				<div class="card-header bg-info" id="headingOne">
+					<h5 class="mb-0">
+						<button class="btn btn-link text-white" data-toggle="collapse" data-target="#collapseOne"
+							aria-expanded="true" aria-controls="collapseOne">
+							Dictionary Query Fields
+						</button>
+					</h5>
+				</div>
+
+				<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+					<div class="card-body">
+
+						<form id="form" class="form-control">
+							<div class="custom-file" style="padding:5px">
+								<label for="pdf" id="files-label" class="custom-file-label">Please attach a PDF file</label>
+								<input type="file" name="files" id="files" multiple class="custom-file-input">
+							</div>
+
+							<div>
+								<label for="startSearchPage">Please enter the page number where you want to start the
+									search:</label>
+								<input type="number" name="startSearchPage" id="startSearchPage" class="form-control"
+									placeholder="0">
+							</div>
+
+							<div>
+								<label for="endSearchPage">Please enter the page number where you want to end the
+									search:</label>
+								<input type="number" name="endSearchPage" id="endSearchPage" class="form-control"
+									placeholder="85">
+							</div>
+
+							<div>
+								<label for="keyword">Please enter a keyword here:</label>
+								<input type="text" name="keyword" id="keyword" class="form-control"
+									placeholder="Abubaldha">
+							</div>
+
+							<div>
+								<label for="header">Please enter a sample header here:</label>
+								<input type="text" name="header" id="header" class="form-control" placeholder="header">
+							</div>
+
+							<div>
+								<label for="footer">Please enter a sample footer here:</label>
+								<input type="text" name="footer" id="footer" class="form-control" placeholder="footer">
+							</div>
+
+							<br>
+							<div>
+								<input type="submit" name="submit" value="Extract" class="btn btn-primary btn-lg btn-block bg-secondary">
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<br>
+		<br>
+		<table id="table" border="1" style="visibility: hidden; width:100%" class="table table-hover dt-responsive nowrap bg-white">
+			<thead class="thead-dark">
+				<tr>
+					<th style="width: 5%">Process Number</th>
+					<th style="width: 30%">Keyword</th>
+					<th style="width: 20%">Part of Speech</th>
+					<th style="width: 45%">Related Text</th>
+				</tr>
+				
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+		<br>
+	</div>
+	<footer class="footer font-small text-light bg-secondary" style="position: absolute; height:35px; width: 100%">
+		<div class="text-center py-1">Developed 2019 Joroca</div>
+	</footer>
+	<!-- You can also require other files to run in this process -->
+	<!-- We are using Node.js <span id="node-version"></span>,
+    Chromium <span id="chrome-version"></span>,
+    and Electron <span id="electron-version"></span>. -->
+</body>
+
+<script src="renderer.js"></script>
+<script type="text/javascript" src="DataTables/datatables.min.js"></script>
+<script type="text/javascript" src="DataTables/altEditor/dataTables.altEditor.free.js"></script>
+<script src="pdfjs/build/pdf.js"></script>
+<script src="prototype_server_side.js"></script>
+
+
+</html>
