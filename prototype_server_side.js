@@ -3,8 +3,9 @@ var START_PAGE;
 var END_PAGE;
 var HEADER;
 var FOOTER;
-var pSpeech=["noun","pronoun","adjective","adverb","verb","preposition","conjuction","interjection","article",
-			 "cli.","v.","n.","inst.","adv.","adj."];
+var HEADER_FOOTER_TOLERANCE = 3.0;
+var KEYWORD_COORDINATES = [];
+var KEYWORD_COORDINATES_COUNT = [];
 
 // The workerSrc property shall be specified.
 pdfjsLib.workerSrc = 'pdfjs/build/pdf.worker.js';
@@ -56,23 +57,61 @@ const workWithFile = file => {
 
             Promise.all(pagesContents).then(function (pgContents) {
                 //combine all pgsContent.items into one array which is textItems
+                var tempLines = [];
+
+                if (HEADER != 'none' && HEADER != 'None' && HEADER != 'NONE') {
+                  tempLines = tempLines.concat(removeHeaders2(pgContents));
+                  pgContents = [];
+                  pgContents = pgContents.concat(tempLines);
+
+                  tempLines = [];
+                }
+
+                if (FOOTER != 'none' && FOOTER != 'None' && FOOTER != 'NONE') {
+                  tempLines = tempLines.concat(removeFooters2(pgContents));
+                  pgContents = [];
+                  pgContents = pgContents.concat(tempLines);
+
+                  tempLines = [];
+                }
+
                 var textItems = [];
                 textItems = textItems.concat(combinePagesToOne(pgContents));
 
                 //test
-                for (var i = 0; i < textItems.length; i++) {
-                  console.log(textItems[i].str);
-                }
+                // for (var i = 0; i < textItems.length; i++) {
+                //   console.log(textItems[i].str);
+                // }
 
                 console.log("///////////////////////");
 
                 var lines = [];
                 lines = lines.concat(combineLineByLine(textItems));
 
-                for (var i = 0; i < lines.length; i++) {
-                  console.log(lines[i].str);
-                  console.log(lines[i].str.length);
-                }
+                //test
+                // for (var i = 0; i < lines.length; i++) {
+                //   console.log(lines[i].str);
+                //   console.log(lines[i].str.length);
+                // }
+                //end test
+
+                //test
+                // var headerYcoords = getHeaderYcoordinate(HEADER, lines);
+                // if (HEADER != 'none' && HEADER != 'None' && HEADER != 'NONE') {
+                //   var tempLines = [];
+                //   tempLines = tempLines.concat(removeHeaders(lines, headerYcoords));
+                //   lines = [];
+                //   lines = lines.concat(tempLines);
+                // }
+                //
+                // var footerYcoords = getFooterYcoordinate(FOOTER, lines);
+                // if (FOOTER != 'none' && FOOTER != 'None' && FOOTER != 'NONE') {
+                //   var tempLines = [];
+                //   tempLines = tempLines.concat(removeFooters(lines, footerYcoords));
+                //   lines = [];
+                //   lines = lines.concat(tempLines);
+                // }
+                //endtest
 
                 var indentationDifference;
                 indentationDifference = getIndentationDifference(KEYWORD, lines);
@@ -80,25 +119,9 @@ const workWithFile = file => {
                 var xCoordinatesOfKeyword = [];
                 xCoordinatesOfKeyword = xCoordinatesOfKeyword.concat(collectXCoordinate(lines, indentationDifference));
 
-                //test
-                var headerYcoords = getHeaderYcoordinate(HEADER, lines);
-                if (HEADER != 'none' || HEADER != 'None' || HEADER != 'NONE') {
-                  var tempLines = [];
-                  tempLines = tempLines.concat(removeHeaders(lines, headerYcoords));
-                  lines = [];
-                  lines = lines.concat(tempLines);
-                }
-
-                var footerYcoords = getFooterYcoordinate(FOOTER, lines);
-                if (FOOTER != 'none' || FOOTER != 'None' || FOOTER != 'NONE') {
-                  var tempLines = [];
-                  tempLines = tempLines.concat(removeFooters(lines, footerYcoords));
-                  lines = [];
-                  lines = lines.concat(tempLines);
-                }
-                //endtest
-
                 fillTable2(lines, indentationDifference, xCoordinatesOfKeyword);
+
+                testKeywordCount(lines, xCoordinatesOfKeyword)
 
                 // Remove loading
                 console.log("end of program");
@@ -154,100 +177,79 @@ function getIndentationDifference(keyword, lines) {
 }
 
 function fillTable2(lines, indentationDifference, xCoordinatesOfKeyword) {
-	$('#table').DataTable().clear();
-	$('#table').DataTable().destroy();
+  var table = document.getElementById("table").getElementsByTagName("tbody")[0];
+  // var table = document.getElementById("table");
+  var row, keyword, relatedText;
+  var isOnRelatedText = false;
 
-	var table = document.getElementById("table").getElementsByTagName("tbody")[0];
-	var row, keyword, relatedText, pSpeech;
-	var isOnRelatedText = false;
+  for (var i = 0; i < lines.length; i++) {
+    if (xCoordinatesOfKeyword.includes(lines[i].xCoordinate.toFixed(1))) {
+      keyword = getKeywordFromStr(lines[i].str);
+      relatedText = getRelatedTextFromStr(lines[i].str);
 
-	for (var i = 0; i < lines.length; i++) {
-		if (xCoordinatesOfKeyword.includes(lines[i].xCoordinate.toFixed(1))) {
-			keyword = getKeywordFromStr(lines[i].str);
-			relatedText = getRelatedTextFromStr(lines[i].str);
+      initializeRow(table);
+      insertKeywordToTable(table, keyword);
+      insertRelatedText(table, relatedText);
+      insertProcessNumber(table);
+    } else {
+      if (table.rows.length > 0) {
+        insertRelatedText(table, lines[i].str);
+      }
+    }
+  }
 
-			initializeRow(table);
-			insertKeywordToTable(table, keyword);
-			insertRelatedText(table, relatedText);
-			insertProcessNumber(table);
+  $('#table').DataTable({
+  serverside:false,
+  dom: "<'row'<'col-sm-6'lB><'col-sm-6'f>>" +
+  "<'row'<'col-md-12'tr>>" +
+  "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+  buttons: [
+      {
+                extend: 'copyHtml5',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            {
+                extend: 'csvHtml5',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+      {
+                extend: 'print',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            'colvis'
+        ]
+  });
+  document.getElementById("table").style.visibility = "visible";
+}
 
-			pSpeech = getPartOfSpeech(table);
-			insertPartOfSpeech(table,pSpeech)
-		} else {
-			if (table.rows.length > 0) {
-				insertRelatedText(table, lines[i].str);
-			}
-		}
-	}
-	///
-	var tableDT = $('#table').DataTable({
-		orderCellsTop: true,
-		responsive: true,
-		altEditor: true,
+function testKeywordCount(lines, xCoordinatesOfKeyword) {
+  for (var i = 0; i < lines.length; i++) {
+    if (xCoordinatesOfKeyword.includes(lines[i].xCoordinate.toFixed(1))) {
+      KEYWORD_COORDINATES.push(lines[i].xCoordinate.toFixed(1));
+    }
+  }
 
-		"columns": [{
-				"data": "ProcessNumber"
-			},
-			{
-				"data": "Keyword"
-			},
-			{
-				"data": "PartOfSpeech"
-			},
-			{
-				"data": "RelatedText"
-			}
-		],
-
-		select: {
-			style: 'single'
-		},
-
-		dom: "<'row'<'col-sm-6'lB><'col-sm-6'f>>" +
-			"<'row'<'col-md-12't>>" +
-			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
-		buttons: [{
-				text: 'Add',
-				name: 'add' // DO NOT change name
-			},
-			{
-				extend: 'selected', // Bind to Selected row
-				text: 'Edit',
-				name: 'edit' // DO NOT change name
-			},
-			{
-				extend: 'selected', // Bind to Selected row
-				text: 'Delete',
-				name: 'delete' // DO NOT change name
-			},
-			{
-				extend: 'csvHtml5',
-				exportOptions: {
-					columns: ':visible'
-				}
-			},
-			{
-				extend: 'pdfHtml5',
-				exportOptions: {
-					columns: ':visible'
-				}
-			}
-		]
-	});
-
-	$('#table thead tr:eq(1) th').each(function (i) {
-		var title = $(this).text();
-		$(this).html('<input type="text" placeholder="Search ' + title + '" />');
-		$('input', this).on('keyup change', function () {
-			if (tableDT.column(i).search() !== this.value) {
-				tableDT
-					.column(i)
-					.search(this.value)
-					.draw();
-			}
-		});
-	});
-	document.getElementById("table").style.visibility = "visible";
+  for (var i = 0; i < KEYWORD_COORDINATES.length; i++) {
+    var count = 0;
+    for (var j = 0; j < KEYWORD_COORDINATES.length; j++) {
+      if (KEYWORD_COORDINATES[i] == KEYWORD_COORDINATES[j]) {
+        count++;
+      }
+    }
+    console.log(KEYWORD_COORDINATES[i] +  " amount: " + count);
+  }
 }
 
 function collectXCoordinate(lines, indentationDifference) {
@@ -346,6 +348,55 @@ function removeFooters(lines, yCoords) {
   return linesWithoutFooters
 }
 
+function removeHeaders2(contents) {
+  var items = [];
+  var headerYcoords;
+
+  for (var i = 0; i < contents.length; i++) {
+    headerYcoords = contents[i].items[0].transform[5];
+      for (var j = 0; j < contents[i].items.length; j++) {
+        if (headerYcoords < contents[i].items[j].transform[5]) {
+          headerYcoords = contents[i].items[j].transform[5];
+        }
+      }
+
+      for (var j = 0; j < contents[i].items.length; j++) {
+        if ((headerYcoords - HEADER_FOOTER_TOLERANCE) <= contents[i].items[j].transform[5]) {
+          console.log("removed header: " + contents[i].items[j].str);
+          console.log(headerYcoords - HEADER_FOOTER_TOLERANCE + " / " + contents[i].items[j].transform[5]);
+          contents[i].items.splice(j, 1);
+          j--;
+        }
+      }
+  }
+  return contents;
+}
+
+function removeFooters2(contents) {
+  var footerYcoords;
+
+  for (var i = 0; i < contents.length; i++) {
+    footerYcoords = contents[i].items[0].transform[5];
+      for (var j = 0; j < contents[i].items.length; j++) {
+        if (footerYcoords > contents[i].items[j].transform[5]) {
+          if (!isSpace(contents[i].items[j].str)) {
+            footerYcoords = contents[i].items[j].transform[5];
+          }
+        }
+      }
+
+      for (var j = 0; j < contents[i].items.length; j++) {
+        if ((footerYcoords + HEADER_FOOTER_TOLERANCE) >= contents[i].items[j].transform[5]) {
+          console.log("removed footer: " + contents[i].items[j].str);
+                    console.log(footerYcoords + HEADER_FOOTER_TOLERANCE + " / " + contents[i].items[j].transform[5]);
+          contents[i].items.splice(j, 1);
+          j--;
+        }
+      }
+  }
+  return contents;
+}
+
 function isIndented(lineAbove, lineCurrent, lines) {
   if (isInRange(lineAbove, lines)) {
     if (lines[lineCurrent].xCoordinate > lines[lineAbove].xCoordinate) {
@@ -393,47 +444,29 @@ function getRelatedTextFromStr(str) {
   return relatedText;
 }
 
-function getPartOfSpeech(table) {
-	for (var i = 0; i < pSpeech.length; i++) {
-		if(table.rows[table.rows.length-1].cells[3].innerHTML.includes(pSpeech[i])){
-      var replaceStr = table.rows[table.rows.length-1].cells[3].innerHTML;
-      replaceStr=replaceStr.replace(pSpeech[i]," ");
-      replaceStr.trim();
-      table.rows[table.rows.length-1].cells[3].innerHTML=replaceStr;
-			return pSpeech[i];
-		}
-	}
-	return "N/A";
-}
-
 function initializeRow(table) {
-	var row, processNumber, keyword, partOfSpeech, relatedText;
+  var row, keyword, relatedText, processNumber;
 
-	row = table.insertRow(table.rows.length);
-	processNumber = row.insertCell(0);
-	keyword = row.insertCell(1);
-	partOfSpeech = row.insertCell(2);
-	relatedText = row.insertCell(3);
-}
+  row = table.insertRow(table.rows.length);
+  keyword = row.insertCell(0);
+  relatedText = row.insertCell(1);
+  processNumber = row.insertCell(2);
 
-function insertProcessNumber(table) {
-	var processNumber = table.rows.length - 1;
-	table.rows[table.rows.length - 1].cells[0].innerHTML += processNumber;
 }
 
 function insertKeywordToTable(table, word) {
     var relatedText;
-    table.rows[table.rows.length - 1].cells[1].innerHTML += word;
-}
-
-function insertPartOfSpeech(table, pSpeech) {
-	var processNumber = table.rows.length - 1;
-	table.rows[table.rows.length - 1].cells[2].innerHTML += pSpeech;
+    table.rows[table.rows.length - 1].cells[0].innerHTML += word;
 }
 
 function insertRelatedText(table, word) {
     var relatedText;
-    table.rows[table.rows.length - 1].cells[3].innerHTML += word + "<br>";
+    table.rows[table.rows.length - 1].cells[1].innerHTML += word + "<br>";
+}
+
+function insertProcessNumber(table) {
+  var processNumber = table.rows.length - 1;
+  table.rows[table.rows.length - 1].cells[2].innerHTML += processNumber;
 }
 
 function isKeyword(index, lines, indentDifference) {
@@ -548,10 +581,3 @@ function combineLineByLine(items) {
 
   return lines;
 }
-
-$(document).ready(function () {
-	$('#table thead tr').clone(true).appendTo('#table thead');
-	$("#files").on('change',function(){
-        document.getElementById('files-label').innerHTML = this.files[0].name
-    });
-});
