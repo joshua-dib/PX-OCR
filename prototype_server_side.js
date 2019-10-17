@@ -28,10 +28,10 @@ document.querySelector('#form').addEventListener('submit', e => {
     END_PAGE = document.getElementById("form").elements.namedItem("endSearchPage").value;
     END_PAGE = parseInt(END_PAGE);
 
-    //get sample header on a page
-    HEADER = document.getElementById("form").elements.namedItem("header").value;
-    //get sample footer on a page
-    FOOTER = document.getElementById("form").elements.namedItem("footer").value;
+    // //get sample header on a page
+    // HEADER = document.getElementById("form").elements.namedItem("header").value;
+    // //get sample footer on a page
+    // FOOTER = document.getElementById("form").elements.namedItem("footer").value;
 })
 
 const workWithFile = file => {
@@ -59,7 +59,11 @@ const workWithFile = file => {
                 //combine all pgsContent.items into one array which is textItems
                 var tempLines = [];
 
-                if (HEADER != 'none' && HEADER != 'None' && HEADER != 'NONE') {
+                HEADER = document.getElementById("header");
+                FOOTER = document.getElementById("footer");
+
+                if (HEADER.checked == true) {
+                // if (HEADER != 'none' && HEADER != 'None' && HEADER != 'NONE') {
                   tempLines = tempLines.concat(removeHeaders2(pgContents));
                   pgContents = [];
                   pgContents = pgContents.concat(tempLines);
@@ -67,7 +71,8 @@ const workWithFile = file => {
                   tempLines = [];
                 }
 
-                if (FOOTER != 'none' && FOOTER != 'None' && FOOTER != 'NONE') {
+                if (FOOTER.checked == true) {
+                // if (FOOTER != 'none' && FOOTER != 'None' && FOOTER != 'NONE') {
                   tempLines = tempLines.concat(removeFooters2(pgContents));
                   pgContents = [];
                   pgContents = pgContents.concat(tempLines);
@@ -88,31 +93,6 @@ const workWithFile = file => {
                 var lines = [];
                 lines = lines.concat(combineLineByLine(textItems));
 
-                //test
-                // for (var i = 0; i < lines.length; i++) {
-                //   console.log(lines[i].str);
-                //   console.log(lines[i].str.length);
-                // }
-                //end test
-
-                //test
-                // var headerYcoords = getHeaderYcoordinate(HEADER, lines);
-                // if (HEADER != 'none' && HEADER != 'None' && HEADER != 'NONE') {
-                //   var tempLines = [];
-                //   tempLines = tempLines.concat(removeHeaders(lines, headerYcoords));
-                //   lines = [];
-                //   lines = lines.concat(tempLines);
-                // }
-                //
-                // var footerYcoords = getFooterYcoordinate(FOOTER, lines);
-                // if (FOOTER != 'none' && FOOTER != 'None' && FOOTER != 'NONE') {
-                //   var tempLines = [];
-                //   tempLines = tempLines.concat(removeFooters(lines, footerYcoords));
-                //   lines = [];
-                //   lines = lines.concat(tempLines);
-                // }
-                //endtest
-
                 var indentationDifference;
                 indentationDifference = getIndentationDifference(KEYWORD, lines);
 
@@ -121,7 +101,7 @@ const workWithFile = file => {
 
                 fillTable2(lines, indentationDifference, xCoordinatesOfKeyword);
 
-                testKeywordCount(lines, xCoordinatesOfKeyword)
+                // testKeywordCount(lines, xCoordinatesOfKeyword)
 
                 // Remove loading
                 console.log("end of program");

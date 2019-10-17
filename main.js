@@ -11,40 +11,17 @@ function createWindow () {
   mainWindow = new BrowserWindow({
     width: 1000,
     height: 1000,
-    title: 'ARC Dictionary Extractor',
-    icon: __dirname + '/Assets/arclogo.ico',
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
-      
-      //Enable for tabs BUT breaks the javscript
-      //Enable for tabs BUT breaks the javscript
-      //Enable for tabs BUT breaks the javscript
-      //Enable for tabs BUT breaks the javscript
-      //Enable for tabs BUT breaks the javscript
-      //nodeIntegration: true,
-      
-      
-      webviewTag: true
+      preload: path.join(__dirname, 'preload.js')
     }
   })
 
   // and load the index.html of the app.
-
-
-  //Change this to tabsindex.html
-  //Change this to tabsindex.html
-  //Change this to tabsindex.html
-  //Change this to tabsindex.html
-  //Change this to tabsindex.html
-  //Change this to tabsindex.html
-  //Change this to tabsindex.html
-
-
-  mainWindow.loadFile('extract.html')
-  mainWindow.maximize(true)
+  mainWindow.loadFile('index.html')
+  // mainWindow.loadFile('extract.html')
 
   // Open the DevTools.
-  //mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools()
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
