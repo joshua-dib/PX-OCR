@@ -5,6 +5,9 @@ var HEADER;
 var FOOTER;
 var pSpeech=["noun","pronoun","adjective","adverb","verb","preposition","conjuction","interjection","article",
 			 "cli.","v.","n.","inst.","adv.","adj."];
+var HEADER_FOOTER_TOLERANCE = 3.0;
+var KEYWORD_COORDINATES = [];
+var KEYWORD_COORDINATES_COUNT = [];
 
 // The workerSrc property shall be specified.
 pdfjsLib.workerSrc = 'pdfjs/build/pdf.worker.js';
@@ -27,10 +30,10 @@ document.querySelector('#form').addEventListener('submit', e => {
     END_PAGE = document.getElementById("form").elements.namedItem("endSearchPage").value;
     END_PAGE = parseInt(END_PAGE);
 
-    //get sample header on a page
-    HEADER = document.getElementById("form").elements.namedItem("header").value;
-    //get sample footer on a page
-    FOOTER = document.getElementById("form").elements.namedItem("footer").value;
+//     //get sample header on a page
+//     HEADER = document.getElementById("form").elements.namedItem("header").value;
+//     //get sample footer on a page
+//     FOOTER = document.getElementById("form").elements.namedItem("footer").value;
 })
 
 const workWithFile = file => {
@@ -55,6 +58,28 @@ const workWithFile = file => {
             }
 
             Promise.all(pagesContents).then(function (pgContents) {
+                HEADER = document.getElementById("header");
+                FOOTER = document.getElementById("footer");
+		var tempLines = [];
+
+                if (HEADER.checked == true) {
+                // if (HEADER != 'none' && HEADER != 'None' && HEADER != 'NONE') {
+                  tempLines = tempLines.concat(removeHeaders2(pgContents));
+                  pgContents = [];
+                  pgContents = pgContents.concat(tempLines);
+
+                  tempLines = [];
+                }
+
+                if (FOOTER.checked == true) {
+                // if (FOOTER != 'none' && FOOTER != 'None' && FOOTER != 'NONE') {
+                  tempLines = tempLines.concat(removeFooters2(pgContents));
+                  pgContents = [];
+                  pgContents = pgContents.concat(tempLines);
+
+                  tempLines = [];
+                }    
+		    
                 //combine all pgsContent.items into one array which is textItems
                 var textItems = [];
                 textItems = textItems.concat(combinePagesToOne(pgContents));
@@ -80,24 +105,6 @@ const workWithFile = file => {
                 var xCoordinatesOfKeyword = [];
                 xCoordinatesOfKeyword = xCoordinatesOfKeyword.concat(collectXCoordinate(lines, indentationDifference));
 
-                //test
-                var headerYcoords = getHeaderYcoordinate(HEADER, lines);
-                if (HEADER != 'none' || HEADER != 'None' || HEADER != 'NONE') {
-                  var tempLines = [];
-                  tempLines = tempLines.concat(removeHeaders(lines, headerYcoords));
-                  lines = [];
-                  lines = lines.concat(tempLines);
-                }
-
-                var footerYcoords = getFooterYcoordinate(FOOTER, lines);
-                if (FOOTER != 'none' || FOOTER != 'None' || FOOTER != 'NONE') {
-                  var tempLines = [];
-                  tempLines = tempLines.concat(removeFooters(lines, footerYcoords));
-                  lines = [];
-                  lines = lines.concat(tempLines);
-                }
-                //endtest
-
                 fillTable2(lines, indentationDifference, xCoordinatesOfKeyword);
 
                 // Remove loading
@@ -111,6 +118,55 @@ const workWithFile = file => {
 
     }
     fileReader.readAsArrayBuffer(file);
+}
+
+function removeHeaders2(contents) {
+  var items = [];
+  var headerYcoords;
+
+  for (var i = 0; i < contents.length; i++) {
+    headerYcoords = contents[i].items[0].transform[5];
+      for (var j = 0; j < contents[i].items.length; j++) {
+        if (headerYcoords < contents[i].items[j].transform[5]) {
+          headerYcoords = contents[i].items[j].transform[5];
+        }
+      }
+
+      for (var j = 0; j < contents[i].items.length; j++) {
+        if ((headerYcoords - HEADER_FOOTER_TOLERANCE) <= contents[i].items[j].transform[5]) {
+          console.log("removed header: " + contents[i].items[j].str);
+          console.log(headerYcoords - HEADER_FOOTER_TOLERANCE + " / " + contents[i].items[j].transform[5]);
+          contents[i].items.splice(j, 1);
+          j--;
+        }
+      }
+  }
+  return contents;
+}
+
+function removeFooters2(contents) {
+  var footerYcoords;
+
+  for (var i = 0; i < contents.length; i++) {
+    footerYcoords = contents[i].items[0].transform[5];
+      for (var j = 0; j < contents[i].items.length; j++) {
+        if (footerYcoords > contents[i].items[j].transform[5]) {
+          if (!isSpace(contents[i].items[j].str)) {
+            footerYcoords = contents[i].items[j].transform[5];
+          }
+        }
+      }
+
+      for (var j = 0; j < contents[i].items.length; j++) {
+        if ((footerYcoords + HEADER_FOOTER_TOLERANCE) >= contents[i].items[j].transform[5]) {
+          console.log("removed footer: " + contents[i].items[j].str);
+                    console.log(footerYcoords + HEADER_FOOTER_TOLERANCE + " / " + contents[i].items[j].transform[5]);
+          contents[i].items.splice(j, 1);
+          j--;
+        }
+      }
+  }
+  return contents;
 }
 
 function combinePagesToOne(contents) {
