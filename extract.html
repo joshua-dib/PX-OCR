@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html style="min-height: 100%">
 
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Arc Project</title>
-		<link rel="stylesheet" type="text/css" href="DataTables/datatables.min.css" />
-	</head>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Arc Extraction</title>
+	<link rel="stylesheet" type="text/css" href="DataTables/datatables.min.css" />
+</head>
 
 	<body class="bg-light">
 		<header>
@@ -38,7 +38,7 @@
 				<div class="card">
 					<div class="card-header bg-info" id="headingOne">
 						<h5 class="mb-0">
-							<button class="btn btn-link text-white" data-toggle="collapse" data-target="#collapseOne"
+							<button class="btn btn-link text-white display-2" data-toggle="collapse" data-target="#collapseOne"
 								aria-expanded="true" aria-controls="collapseOne">
 								Dictionary Query Fields
 							</button>
@@ -48,40 +48,52 @@
 					<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
 						<div class="card-body">
 
-							<form id="form" class="form-control">
-								<div class="custom-file" style="padding:5px">
+							<form id="form" class="form-control needs-validation" novalidate>
+								<div class="custom-file">
 									<label for="pdf" id="files-label" class="custom-file-label">Please attach a PDF file</label>
-									<input type="file" name="files" id="files" multiple class="custom-file-input">
+									<input type="file" name="files" id="files" single class="custom-file-input" required>
+									<div class="invalid-feedback">
+										Please add a pdf file.
+									</div>
 								</div>
 
-								<div>
+								<div style="padding-top:10px">
 									<label for="startSearchPage">Please enter the page number where you want to start the
 										search:</label>
 									<input type="number" name="startSearchPage" id="startSearchPage" class="form-control"
-										placeholder="0">
+										placeholder="0" required>
+									<div class="invalid-feedback">
+										Please enter a page number to start searching from.
+									</div>
 								</div>
 
 								<div>
 									<label for="endSearchPage">Please enter the page number where you want to end the
 										search:</label>
 									<input type="number" name="endSearchPage" id="endSearchPage" class="form-control"
-										placeholder="85">
+										placeholder="85" required>
+									<div id="endSearchPage-error" class="invalid-feedback">
+										Please enter a page number to end the search.
+									</div>
 								</div>
 
 								<div>
 									<label for="keyword">Please enter a keyword here:</label>
 									<input type="text" name="keyword" id="keyword" class="form-control"
-										placeholder="Abubaldha">
+										placeholder="Abubaldha" required>
+									<div class="invalid-feedback">
+										Please enter a keyword.
+									</div>
 								</div>
 
-								<div>
-									<label for="header">Does the PDF file got Header/s</label>
-									<input type="checkbox" name="header" id="header" class="form-control">
+								<div style="padding-top:10px">
+									<label for="header" class="">Does the PDF file have a Header/s</label>
+									<input type="checkbox" name="header" id="header" class="" style="float:right">
 								</div>
 
-								<div>
-									<label for="footer">Does the PDF file got footer/s:</label>
-									<input type="checkbox" name="footer" id="footer" class="form-control">
+								<div style="padding-top:10px"> 
+									<label for="footer" class="">Does the PDF file have a footer/s:</label>
+									<input type="checkbox" name="footer" id="footer" class="" style="float:right">
 								</div>
 
 								<br>
