@@ -15,6 +15,77 @@ var KEYWORD_COORDINATES_COUNT = [];
 // The workerSrc property shall be specified.
 pdfjsLib.workerSrc = 'pdfjs/build/pdf.worker.js';
 
+document.getElementById("save").addEventListener("click", saveTable);
+function saveTable() {
+  var table = document.getElementById("table");
+	
+  if (table.rows.length <= 1) {
+    alert("Table is empty.");
+  } else {
+    if (typeof(Storage) !== "undefined") {
+      console.log("localStorage/sessionStorage support..");
+
+      var arrayTable = [];
+      var currentRow = [];
+      var stringifyTable;
+
+      //This for loop starts with index 1
+      for (var i = 1; i < table.rows.length; i++) {
+        for (var j = 0; j < table.rows[i].cells.length; j++) {
+          currentRow.push(table.rows[i].cells[j].innerHTML);
+        }
+        arrayTable.push(currentRow);
+        currentRow = [];
+      }
+
+      //JSON version
+      stringifyTable = JSON.stringify(arrayTable);
+      localStorage.setItem("table", stringifyTable);
+
+      // //individual keys for each row
+      // for (var i = 0; i < arrayTable.length; i++) {
+      //   stringifyTable = JSON.stringify(arrayTable[i]);
+      //   localStorage.setItem(stringifyTable, stringifyTable);
+      // }
+
+      // // not JSON version
+      // localStorage.setItem("table", arrayTable);
+    } else {
+      console.log("No Web Storage support..");
+    }
+  }
+}
+
+document.getElementById("retrieve").addEventListener("click", retrieveTable);
+function retrieveTable() {
+
+  var values = [];
+  var keys = Object.keys(localStorage);
+  var i = keys.length;
+  if (i == 0) {
+    alert("Local storage is empty");
+  } else {
+    if (typeof(Storage) !== "undefined") {
+      console.log("localStorage/sessionStorage support..");
+
+      var parsedArray = JSON.parse(localStorage.getItem("table"))
+      console.log(parsedArray);
+
+      var table = document.getElementById("table").getElementsByTagName("tbody")[0];
+
+      for (var i = 0; i < parsedArray.length; i++) {
+        initializeRow(table);
+        insertKeywordToTable(table, parsedArray[i][0]);
+        insertRelatedText(table, parsedArray[i][1]);
+        insertProcessNumber(table);
+
+      }
+      document.getElementById("table").style.visibility = "visible";
+    } else {
+      console.log("No Web Storage support..");
+    }
+  }
+}
 
 document.querySelector('#form').addEventListener('submit', e => {
 	e.preventDefault()
