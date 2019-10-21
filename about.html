@@ -9,7 +9,7 @@
 	<link rel="stylesheet" type="text/css" href="DataTables/datatables.min.css" />
 </head>
 
-<body>
+<body class="bg-light" >
 	<header>
 		<nav class="navbar navbar-expand-md navbar-dark sticky-top" style="background-color: #333333">
 			<a href="extract.html" class="navbar-brand"><img id="logo2" src="assets/logo2.png" height="64" width="263"
@@ -33,44 +33,54 @@
 		</nav>
 		<br>
 	</header>
-	<div class="container card">
+	<div class="container card" style="padding: 35px">
 		<article>
-			<h1>Western Sydney University - Our Project Team </h1>
+			<h1 class="display-4">Arc Dictionary Extraction - About </h1>
 			<hr>
-			<h2> Kingswood PX Team PX1219 </h2>
-			<br>
-			<p> This project was created by students Josaphine, Caleb, Josh and Roger in the Professional Experience
-				project
-				“Extraction of Structured Information from Dictionary PDFs” for Dr. Rachel Hendery from the School of
-				Humanities
-				and Communication Arts.<br><br>
-				We are a group of Western Sydney University students ungoing our Bachelor Degrees in Computer Science
-				(Josh,
-				Roger)
-				and Bachelor of Information Communications Technology (Josaphine, Caleb).
-				With each of us having different applied web application development skills which compliment one another
-				- we
-				have created a successful web based tool that will aid Rachel and her project team's future work.
+			<h2>Overview</h2>
+			<p> Currently in the industry of linguistic analysis dictionaries must be manually converted into a digital
+				format and placed into a spreadsheet before the advantages of technologies such as formulae and quality
+				of life feature can be utilised to aid researchers in their analysis. This act is a tedious and
+				time-consuming activity which not only requires a strong eye for detail and an advanced level of
+				computer dexterity it most importantly ruins the researches workflow and detracts from meaningful hours
+				that could be spent making progress and dissecting the content being prepared. To serve as a fix for
+				this issue an automatic OCR tool will be developed to aid in the extraction of dictionary entries for Dr
+				Rachel Hendery and her team to use in their works.
 			</p>
 			<br>
-			<h3>Technologies:</h3>
-			<br>
+			<h2>Technologies</h2>
+			<p>
+				The developed solution will have a web based infrastructure which most importantly allows for package
+				integration from a wide variety of sources, in turn increasesing the potential of the application and
+				adding to the quality of life and functionality. The primary packages used include PDF.js to help
+				extract the text from a file to then process, following once split and cleaned up it will be passed to
+				Datatables which allows for user interaction and data manipulation, and finally Electron is used to
+				transform the application into a localised program one can access anywhere straight from the desktop.
+			</p>
 			<div>
 				<ul class="list-group list-group-flush">
 					<li class="list-group-item">Javascript</li>
-					<li class="list-group-item">HTML5</li>
-					<li class="list-group-item">CSS</li>
+					<li class="list-group-item">Bootstrap</li>
 					<li class="list-group-item">Electron</li>
+					<li class="list-group-item">PDF.js</li>
+					<li class="list-group-item">Datatables</li>
 				</ul>
 			</div>
 			<br>
-			<img id="group" src="assets/groupphoto.jpg" height="370" width="480" style="align-content: center";/>
+			<h2>Project Team</h2>
+			<p>
+				This project has been Developed by students Josephine, Joshua, Roger, and Caleb during their studies in
+				Professional Experience project. With each member coming from different backgrounds and streams of
+				eduction it provides the team with a broad vision and a complementary set of skills to provide a
+				complete, robust solution.
+			</p>
+			<!-- <img id="group" src="assets/groupphoto.jpg" height="370" width="480" style="align-content: center" ; /> -->
 			</p>
 		</article>
 	</div>
 	<br>
-	<footer class="footer font-small text-light bg-secondary" style="position: absolute; height:35px; width: 100%">
-		<div class="text-center py-1">Developed 2019 Joroca</div>
+	<footer class="bd-footer text-muted" style="position: absolute; height:35px; width: 100%">
+		<div class="text-center py-1">Developed 2019</div>
 	</footer>
 </body>
 

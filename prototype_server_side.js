@@ -5,7 +5,7 @@ var HEADER;
 var FOOTER;
 var isValid;
 var fileAttached;
-var pSpeech = ["noun", "pronoun", "adjective", "adverb", "verb", "preposition", "conjuction", "interjection", "article",
+var pSpeech = ["pronoun", "noun", "adjective", "adverb","intransitive verb", "ending","verb", "preposition", "conjuction", "interjection", "article",
 	"cli.", "v.", "n.", "inst.", "adv.", "adj."
 ];
 var HEADER_FOOTER_TOLERANCE = 3.0;
@@ -30,7 +30,7 @@ function saveTable() {
       var stringifyTable;
 
       //This for loop starts with index 1
-      for (var i = 1; i < table.rows.length; i++) {
+      for (var i = 2; i < table.rows.length; i++) {
         for (var j = 0; j < table.rows[i].cells.length; j++) {
           currentRow.push(table.rows[i].cells[j].innerHTML);
         }
@@ -58,7 +58,9 @@ function saveTable() {
 
 document.getElementById("retrieve").addEventListener("click", retrieveTable);
 function retrieveTable() {
-
+	
+	$('#table').DataTable().clear();
+	$('#table').DataTable().destroy();
   var values = [];
   var keys = Object.keys(localStorage);
   var i = keys.length;
@@ -75,16 +77,19 @@ function retrieveTable() {
 
       for (var i = 0; i < parsedArray.length; i++) {
         initializeRow(table);
-        insertKeywordToTable(table, parsedArray[i][0]);
-        insertRelatedText(table, parsedArray[i][1]);
+        insertKeywordToTable(table, parsedArray[i][1]);
+		insertRelatedText(table, parsedArray[i][3]);
+		insertPartOfSpeech(table, parsedArray[i][2])
         insertProcessNumber(table);
 
       }
-      document.getElementById("table").style.visibility = "visible";
+	  document.getElementById("tableWrapper").style.visibility = "visible";
+	  document.getElementById("save").disabled=false;
     } else {
       console.log("No Web Storage support..");
     }
   }
+  intialiseDatatables();
 }
 
 document.querySelector('#form').addEventListener('submit', e => {
@@ -321,9 +326,9 @@ function getIndentationDifference(keyword, lines) {
 }
 
 function fillTable2(lines, indentationDifference, xCoordinatesOfKeyword) {
+	
 	$('#table').DataTable().clear();
 	$('#table').DataTable().destroy();
-
 	var table = document.getElementById("table").getElementsByTagName("tbody")[0];
 	var row, keyword, relatedText, pSpeech;
 	var isOnRelatedText = false;
@@ -347,9 +352,15 @@ function fillTable2(lines, indentationDifference, xCoordinatesOfKeyword) {
 		}
 	}
 	///
+	intialiseDatatables();
+	document.getElementById("tableWrapper").style.visibility = "visible";
+	document.getElementById("save").disabled=false
+}
+
+function intialiseDatatables(){
 	var tableDT = $('#table').DataTable({
-		orderCellsTop: true,
 		responsive: true,
+		ordering: false,
 		altEditor: true,
 
 		"columns": [{
@@ -414,7 +425,6 @@ function fillTable2(lines, indentationDifference, xCoordinatesOfKeyword) {
 			}
 		});
 	});
-	document.getElementById("table").style.visibility = "visible";
 }
 
 function collectXCoordinate(lines, indentationDifference) {
@@ -717,6 +727,7 @@ function combineLineByLine(items) {
 
 $(document).ready(function () {
 	$('#table thead tr').clone(true).appendTo('#table thead');
+	$('#table').DataTable()
 	$("#files").on('change', function () {
 		document.getElementById('files-label').innerHTML = this.files[0].name
 	});
