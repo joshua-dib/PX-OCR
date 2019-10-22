@@ -1,9 +1,9 @@
 {
-  "name": "",
-  "productName": "",
+  "name": "arc-extraction",
+  "productName": "Arc Extract",
   "version": "1.0.0",
-  "description": "",
-  "main": "main.js",
+  "description": "My Electron application description",
+  "main": "src/index.js",
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
@@ -13,9 +13,10 @@
   },
   "keywords": [],
   "author": {
-    "name": ""
+    "name": "Joshua Dib",
+    "email": "18993745@student.westernsydney.edu.au"
   },
-  "license": "UNLICENSED",
+  "license": "MIT",
   "config": {
     "forge": {
       "packagerConfig": {},
@@ -23,34 +24,35 @@
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": ""
+            "name": "Arc Extract"
           }
         },
         {
-          "name": "@electron-forge/maker-zip"
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
         },
         {
           "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
           "config": {}
         }
       ]
     }
   },
   "dependencies": {
-    "del": "^5.1.0",
-    "electron": "6.0.10",
-    "electron-compile": "6.4.4",
     "electron-squirrel-startup": "^1.0.0"
   },
-  "optionalDependencies": {},
   "devDependencies": {
     "@electron-forge/cli": "6.0.0-beta.45",
     "@electron-forge/maker-deb": "6.0.0-beta.45",
     "@electron-forge/maker-rpm": "6.0.0-beta.45",
     "@electron-forge/maker-squirrel": "6.0.0-beta.45",
     "@electron-forge/maker-zip": "6.0.0-beta.45",
-    "electron": "6.0.10",
-    "electron-compile": "6.4.4",
-    "electron-prebuilt-compile": "4.0.0"
+    "electron": "7.0.0"
   }
 }
