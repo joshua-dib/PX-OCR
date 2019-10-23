@@ -5,7 +5,7 @@ var HEADER;
 var FOOTER;
 var isValid;
 var fileAttached;
-var pSpeech = ["pronoun", "noun", "adjective", "adverb","intransitive verb", "ending","verb", "preposition", "conjuction", "interjection", "article",
+var pSpeech = ["pronoun", "noun", "adjective", "adverb","intransitive verb", "transitive verb","ending","verb", "preposition", "conjuction", "interjection", "article",
 	"cli.", "v.", "n.", "inst.", "adv.", "adj."
 ];
 var HEADER_FOOTER_TOLERANCE = 3.0;
@@ -103,10 +103,10 @@ document.querySelector('#form').addEventListener('submit', e => {
 	KEYWORD = document.getElementById("form").elements.namedItem("keyword").value;
 	//get startSearchPage
 	START_PAGE = document.getElementById("form").elements.namedItem("startSearchPage").value;
-	START_PAGE = parseInt(START_PAGE);
+	START_PAGE = parseInt(START_PAGE)-1;
 	//get endSearchPage
 	END_PAGE = document.getElementById("form").elements.namedItem("endSearchPage").value;
-	END_PAGE = parseInt(END_PAGE);
+	END_PAGE = parseInt(END_PAGE)-1;
 
 	if (formValidate()) {
 		Array.from(files).forEach(workWithFile)

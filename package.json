@@ -1,6 +1,6 @@
 {
   "name": "arc-extraction",
-  "productName": "Arc Extract",
+  "productName": "arc-xtract",
   "version": "1.0.0",
   "description": "My Electron application description",
   "main": "src/index.js",
@@ -24,7 +24,7 @@
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "Arc Extract"
+            "name": "arc-extract"
           }
         },
         {
