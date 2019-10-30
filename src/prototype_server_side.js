@@ -413,7 +413,7 @@ function intialiseDatatables(){
 		]
 	});
 
-	$('#table thead tr:eq(1) th').each(function (i) {
+	$('#table thead tr:eq(0) th').each(function (i) {
 		var title = $(this).text();
 		$(this).html('<input type="text" placeholder="Search ' + title + '" />');
 		$('input', this).on('keyup change', function () {
