@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html style="min-height: 100%">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Instructions</title>
+	<!-- <link rel="stylesheet" href="external.css"> -->
+	<link rel="stylesheet" type="text/css" href="Datatables/datatables.min.css" />
+</head>
+
+<body class="bg-light">
+	<header>
+		<nav class="navbar navbar-expand-md navbar-dark sticky-top" style="background-color: #333333">
+			<a href="index.html" class="navbar-brand"><img id="logo2" src="assets/logo2.png" height="64" width="263"
+					alt="minimal"></a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse justify-content-end" id="collapsibleNavbar">
+				<ul class="navbar-nav">
+			
+					<li class="nav-item">
+						<a class="nav-link" href="index.html">Extract</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="instructions.html">Instructions</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="about.html">About</a>
+					</li>
+				</ul>
+			</div>
+		</nav>
+		<br>
+	</header>
+	<div class="container card" style="padding: 35px; min-height:calc(100vh - 149px)">
+		<h1 class="display-4">How to use Arc Dictionary Extraction</h1>
+		<hr>
+		<h2>Steps to success - Instructions</h4>
+			<br>
+			<div class="accordion" id="accordionExample">
+				<div class="card">
+					<div class="card-header" id="headingOne">
+						<h2 class="mb-0">
+							<button class="btn btn-link " type="button" data-toggle="collapse"
+								data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+								<b>Step 1:</b> Attach a PDF file
+							</button>
+						</h2>
+					</div>
+					<div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+						<div class="card-body">
+							<ol>
+								<li>Click the 'Browse' button and select a single <strong>PDF</strong> file</li>
+								<ul>
+									<li>Please do not select any other file type as they are not supported.</li>
+									<li>Must be an OCR'ed file</li>
+									<li>For best results the document should have consistent style and content</li>
+								</ul>
+								<li>The selected file will display in the corresponding label</li>
+							</ol>
+						</div>
+					</div>
+				</div>
+				<div class="card">
+					<div class="card-header" id="headingTwo">
+						<h2 class="mb-0">
+							<button class="btn btn-link collapsed " type="button" data-toggle="collapse"
+								data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+								<b>Step 2: </b> Enter a valid page number from where you would like to start your search
+							</button>
+						</h2>
+					</div>
+					<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+						<div class="card-body">
+							<ol>
+								<li>In the selected PDF find a page to begin extracting words</li>
+								<li>Enter the PDF page number, not the document's page number</li>
+							</ol>
+						</div>
+					</div>
+				</div>
+				<div class="card">
+					<div class="card-header" id="headingThree">
+						<h2 class="mb-0">
+							<button class="btn btn-link collapsed " type="button" data-toggle="collapse"
+								data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+
+								<b>Step 3: </b> Enter a valid page number from where you would like to end your
+								search
+							</button>
+						</h2>
+					</div>
+					<div id="collapseThree" class="collapse" aria-labelledby="headingThree"
+						data-parent="#accordionExample">
+						<div class="card-body">
+							<ol>
+								<li>In the selected PDF find a page to end the extraction of words</li>
+								<ul>
+									<li>Must be consistent format throughout the page range</li>
+									<li>End search page may be the same as the start search page</li>
+								</ul>
+								<li>Enter the PDF page number, not the document's page number</li>
+							</ol>
+						</div>
+					</div>
+				</div>
+				<div class="card">
+					<div class="card-header" id="headingFour">
+						<h2 class="mb-0">
+							<button class="btn btn-link collapsed " type="button" data-toggle="collapse"
+								data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+								<b>Step 4: </b> Specify a keyword to narrow your results
+							</button>
+						</h2>
+					</div>
+					<div id="collapseFour" class="collapse" aria-labelledby="headingThree"
+						data-parent="#accordionExample">
+						<div class="card-body">
+							<ol>
+								<li>Within the page range select a keyword to enter</li>
+								<ul>
+									<li>A good keyword has related text that spans two lines</li>
+									<li>End search page may be the same as the start search page</li>
+								</ul>
+							</ol>
+						</div>
+					</div>
+				</div>
+				<div class="card">
+					<div class="card-header" id="headingFive">
+						<h2 class="mb-0">
+							<button class="btn btn-link collapsed " type="button" data-toggle="collapse"
+								data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+								<b>Step 5: </b> Select the header/footer checkboxes
+							</button>
+						</h2>
+					</div>
+					<div id="collapseFive" class="collapse" aria-labelledby="headingFive"
+						data-parent="#accordionExample">
+						<div class="card-body">
+							<ol>
+								<li>Within the page range if there is a general header/footer select the box accordingly
+								</li>
+								<ul>
+									<li>This includes document title/page number footers or index headers</li>
+								</ul>
+							</ol>
+						</div>
+					</div>
+				</div>
+				<div class="card">
+					<div class="card-header" id="headingSix">
+						<h2 class="mb-0">
+							<button class="btn btn-link collapsed " type="button" data-toggle="collapse"
+								data-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+								<b>Step 6: </b> Hold tight! - your information is processing for output!
+							</button>
+						</h2>
+					</div>
+					<div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordionExample">
+						<div class="card-body">
+							<ol>
+								<li>If input is valid a table with results will appear below with features for the user
+									to continue editing or export
+								</li>
+							</ol>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- <hr>
+			<h2>Arc Dictionary Extraction - Instructional video </h2>
+			<br>
+			<div class="text-center">
+				<iframe width="560" height="315" src="https://www.youtube.com/embed/4fBKb0ZWBBE?showinfo=0"></iframe>
+				<p class="text-muted">Video source: Arc Dictionary Extraction on <a
+						href="https://www.youtube.com/channel/UCoiDz6Wztw0fcseSSzIA8kA" style="color:red">Youtube.</a>
+				</p>
+			</div> -->
+	</div>
+	<br>
+	<footer class="bd-footer text-muted" style="position: absolute; height:35px; width: 100%">
+		<div class="text-center py-1">Developed 2019</div>
+	</footer>
+</body>
+<script type="text/javascript" src="Datatables/datatables.min.js"></script>
+
+</html>

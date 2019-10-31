@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html style="min-height: 100%">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Arc Extraction</title>
+	<link rel="stylesheet" type="text/css" href="Datatables/datatables.min.css" />
+</head>
+
+<body class="bg-light">
+	<header>
+		<nav class="navbar navbar-expand-md navbar-dark sticky-top" style="background-color: #333333">
+			<a href="index.html" class="navbar-brand"><img id="logo2" src="assets/logo2.png" height="64" width="263"
+					alt="minimal"></a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse justify-content-end" id="collapsibleNavbar">
+				<ul class="navbar-nav">
+						
+					<li class="nav-item">
+						<a class="nav-link" href="index.html">Extract</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="instructions.html">Instructions</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="about.html">About</a>
+					</li>
+				</ul>
+			</div>
+		</nav>
+		<br>
+	</header>
+
+	<div class="container" style="padding: 5px; min-height:calc(100vh - 149px)">
+		<div id="accordion">
+			<div class="card">
+				<div class="card-header bg-info" id="headingOne">
+					<h5 class="mb-0">
+						<button class="btn btn-link text-white" data-toggle="collapse"
+							data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="font-size:1em">
+							Dictionary Query Fields
+						</button>
+					</h5>
+				</div>
+
+				<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+					<div class="card-body">
+
+						<form id="form" class="form-control needs-validation" novalidate>
+							<div class="custom-file">
+								<label for="pdf" id="files-label" class="custom-file-label">Please attach a PDF
+									file</label>
+								<input type="file" name="files" id="files" single class="custom-file-input" required>
+								<div class="invalid-feedback">
+									Please add a pdf file.
+								</div>
+							</div>
+
+							<div style="padding-top:10px">
+								<label for="startSearchPage">Please enter the page number where you want to start the
+									search:</label>
+								<input type="number" name="startSearchPage" id="startSearchPage" class="form-control"
+									placeholder="0" required>
+								<div class="invalid-feedback">
+									Please enter a page number to start searching from.
+								</div>
+							</div>
+
+							<div>
+								<label for="endSearchPage">Please enter the page number where you want to end the
+									search:</label>
+								<input type="number" name="endSearchPage" id="endSearchPage" class="form-control"
+									placeholder="85" required>
+								<div id="endSearchPage-error" class="invalid-feedback">
+									Please enter a page number to end the search.
+								</div>
+							</div>
+
+							<div>
+								<label for="keyword">Please enter a keyword here:</label>
+								<input type="text" name="keyword" id="keyword" class="form-control"
+									placeholder="Abubaldha" required>
+								<div class="invalid-feedback">
+									Please enter a keyword.
+								</div>
+							</div>
+
+							<div style="padding-top:10px">
+								<label for="header" class="">Does the PDF file have a Header/s</label>
+								<input type="checkbox" name="header" id="header" class="" style="float:right">
+							</div>
+
+							<div style="padding-top:10px">
+								<label for="footer" class="">Does the PDF file have a footer/s:</label>
+								<input type="checkbox" name="footer" id="footer" class="" style="float:right">
+							</div>
+
+							<br>
+							<div>
+								<input type="submit" name="submit" value="Extract"
+									class="btn btn-primary btn-lg btn-block bg-secondary">
+							</div>
+						</form>
+
+						<hr>
+						<span>
+							<input type="button" value="Retrieve"
+								class="btn btn-primary btn-lg btn-outline-primary" style="width:49.5%" id="retrieve">
+							<input type="button" value="Save"
+								class="btn btn-primary btn-lg btn-outline-primary" style="width:49%" id="save" disabled>
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<br>
+		<br>
+		<div id="tableWrapper" style="visibility: hidden">
+		<table id="table" border="1"
+			class="table table-hover dt-responsive nowrap bg-white" style="width:100%">
+			<thead class="thead-dark">
+				<tr>
+					<th style="width: 5%">Process Number</th>
+					<th style="width: 30%">Keyword</th>
+					<th style="width: 20%">Part of Speech</th>
+					<th style="width: 45%">Related Text</th>
+				</tr>
+
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+		</div>
+	</div>
+	<br>
+	<footer class="bd-footer text-muted" style="position: absolute; height:35px; width: 100%">
+		<div class="text-center py-1">Developed 2019</div>
+	</footer>
+	<!-- You can also require other files to run in this process -->
+	<!-- We are using Node.js <span id="node-version"></span>,
+	    Chromium <span id="chrome-version"></span>,
+	    and Electron <span id="electron-version"></span>. -->
+</body>
+
+<script type="text/javascript" src="Datatables/datatables.min.js"></script>
+<script type="text/javascript" src="Datatables/altEditor/dataTables.altEditor.free.js"></script>
+<script src="pdfjs/build/pdf.js"></script>
+<script src="prototype_server_side.js"></script>
+
+
+</html>
