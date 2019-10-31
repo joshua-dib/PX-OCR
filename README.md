@@ -27,4 +27,5 @@ File Directory -
 	Documentation: documentation throughout the course
 	Dictionaries: tested dictionaries to be used as samples
 	
+Repository: https://github.com/Josh-18993745/PX-OCR.git
 Developed 2019 by Roger Bernardo, Joshua Dib, Caleb Smith, Josephine Paculio
