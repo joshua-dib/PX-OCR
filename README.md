@@ -28,4 +28,5 @@ File Directory -
 	Dictionaries: tested dictionaries to be used as samples
 	
 Repository: https://github.com/Josh-18993745/PX-OCR.git
+Google Drive: https://drive.google.com/drive/folders/1ZRajJ_xPTyLwNj2T1efzB7VzP2dalQg9?usp=sharing
 Developed 2019 by Roger Bernardo, Joshua Dib, Caleb Smith, Josephine Paculio
